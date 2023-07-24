@@ -5,11 +5,25 @@ on:
 
 jobs:
   firstjob:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - name: firstJob script
       shell: bash
       run: echo Hello World! This is the first job
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: setup node 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - name: setup python3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    - name: wxdlong
+      uses: wxdlong/hello-action@3dc69a523f937b57d06445e71f237b19565fb830
+      with:
+        who-to-greet: 'live-lesson attendees'
 
   secondjob:
     runs-on: ubuntu-latest

@@ -10,6 +10,14 @@ jobs:
     - name: firstJob script
       shell: bash
       run: echo Hello World! This is the first job
+    - name: greetings
+      id: greetings
+      uses: actions/hello-world-javascript-action@main
+      with:
+        who-to-greet: 'Mona the Octocat'
+    - name: time
+      run: |
+        echo "The time of the greeting was at: ${{ steps.greetings.outputs.time }}"
     - name: checkout
       uses: actions/checkout@v3
     - name: setup node 16

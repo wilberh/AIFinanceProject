@@ -28,9 +28,10 @@ jobs:
       with:
         node-version: 16
     - name: setup python3.9
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: '3.9'
+    - run: pip install -r requirements.txt
     - name: wxdlong
       uses: wxdlong/hello-action@3dc69a523f937b57d06445e71f237b19565fb830
       with:

@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.10
 RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt .

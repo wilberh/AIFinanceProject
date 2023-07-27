@@ -105,6 +105,7 @@ jobs:
       - name: Connect to kubernetes cluster
         run: |
           gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER}} --zone ${{secrets.GKE_ZONE}} --project ${{secrets.GKE_PROJECT}}
+      - run: helm list --all
       - name: Helm Deploy # deploying our helm chart to our cluster
         run: >
           helm upgrade

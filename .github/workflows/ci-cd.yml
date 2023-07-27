@@ -105,7 +105,15 @@ jobs:
       - name: Connect to kubernetes cluster
         run: |
           gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER}} --zone ${{secrets.GKE_ZONE}} --project ${{secrets.GKE_PROJECT}}
-      - run: helm list --all
+      - name: List Helm releases
+        run: helm list --all
+      - name: Remove pending Helm install
+        run: helm delete 1 -n default
+      - name: Install Helm - again # helm installation in our runner for deploying.
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
       - name: Helm Deploy # deploying our helm chart to our cluster
         run: >
           helm upgrade

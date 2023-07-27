@@ -90,7 +90,7 @@ jobs:
         with:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
-          credentials: ${{ secrets.GKE_PASSWORD }}
+          project_id: ${{ secrets.GKE_PROJECT }}
       - name: Set Repo Location # steps required to find the image id of our image from contiainer registry
         id: repo
         run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step

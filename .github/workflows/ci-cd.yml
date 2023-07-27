@@ -88,8 +88,8 @@ jobs:
       # Get the GKE credentials so we can deploy to the cluster
       - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
         with:
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
+          cluster_name: ${{ secrets.GKE_CLUSTER }}
+          location: ${{ secrets.GKE_ZONE }}
           project_id: ${{ secrets.GKE_PROJECT }}
       - name: Set Repo Location # steps required to find the image id of our image from contiainer registry
         id: repo

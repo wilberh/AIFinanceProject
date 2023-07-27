@@ -1,6 +1,6 @@
-image: custom-value
-user: custom-value
-password: custom-value
+image: django-app
+user: postgres
+password: postgres
 host: custom-value
-port: custom-value
-name: custom-value
+port: 5432
+name: wilber

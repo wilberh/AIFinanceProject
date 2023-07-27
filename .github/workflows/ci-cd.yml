@@ -102,6 +102,8 @@ jobs:
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
+      - name: Sleep for 30 seconds
+        run: sleep 30s
       - name: Connect to kubernetes cluster
         run: |
           gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER}} --zone ${{secrets.GKE_ZONE}} --project ${{secrets.GKE_PROJECT}}

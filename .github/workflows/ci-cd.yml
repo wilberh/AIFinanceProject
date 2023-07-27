@@ -29,16 +29,16 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout code # checking our the code at current commit that triggers the workflow
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Cache dependency # caching dependency will make our build faster.
-        uses: actions/cache@v2 # for more info checkout pip section documentation at https://github.com/actions/cache
+        uses: actions/cache@v3 # for more info checkout pip section documentation at https://github.com/actions/cache
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
       - name: Setup python environment # setting python environment to 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: '3.10' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
       - name: Check Python version # checking the python version to see if 3.x is installed.
@@ -58,7 +58,7 @@ jobs:
     if: ${{ github.event_name == 'push' }} # will be fired if the trigger event is a push event.
     steps:
       - name: Checkout Code # checking out code.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build & Publish Image # we are using a public GitHub Action to build and publish docker image to our GCR registry.
         uses: docker/build-push-action@v2
         env:
@@ -76,21 +76,21 @@ jobs:
     if: ${{ github.event_name == 'push' }} # will be fire if the trigger event is a push event.
     steps:
       - name: Checkout code # checking out code.
-        uses: actions/checkout@v2
-      - uses: google-github-actions/setup-gcloud@1bee7de035d65ec5da40a31f8589e240eba8fde5 # settings up gcloud cli in our job machine.
+        uses: actions/checkout@v3
+      - id: auth
+        uses: google-github-actions/auth@v1
         with:
-          service_account_key: ${{ secrets.GKE_PASSWORD }} # service account file.
-          project_id: ${{ secrets.GKE_PROJECT }}
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+      - name: Use gcloud CLI
+        run: gcloud info
+      - run: |-
+          gcloud --quiet auth configure-docker
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
       - run: |-
-          gcloud --quiet auth configure-docker
-      # Get the GKE credentials so we can deploy to the cluster
-      - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
-        with:
-          cluster_name: ${{ secrets.GKE_CLUSTER }}
-          location: ${{ secrets.GKE_ZONE }}
-          project_id: ${{ secrets.GKE_PROJECT }}
+          gcloud --quiet auth configure-docker          
       - name: Set Repo Location # steps required to find the image id of our image from contiainer registry
         id: repo
         run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step

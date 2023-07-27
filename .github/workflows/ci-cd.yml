@@ -85,11 +85,12 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
       - name: Use gcloud CLI
         run: gcloud info
-      - run: |-
-          gcloud --quiet auth configure-docker
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
-      - run: |-
+      - run: |
           gcloud --quiet auth configure-docker          
       - name: Set Repo Location # steps required to find the image id of our image from contiainer registry
         id: repo
@@ -101,9 +102,6 @@ jobs:
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
-      - name: Install gke-gcloud-auth-plugin
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
       - name: Connect to kubernetes cluster
         run: |
           gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER}} --zone ${{secrets.GKE_ZONE}} --project ${{secrets.GKE_PROJECT}}

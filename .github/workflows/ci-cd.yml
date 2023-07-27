@@ -107,8 +107,8 @@ jobs:
           gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER}} --zone ${{secrets.GKE_ZONE}} --project ${{secrets.GKE_PROJECT}}
       - name: List Helm releases
         run: helm list --all
-      - name: Remove pending Helm install
-        run: helm delete 1 -n default
+      - name: Rollback pending Helm install
+        run: helm rollback app 1 --namespace default
       - name: Install Helm - again # helm installation in our runner for deploying.
         run: |
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3

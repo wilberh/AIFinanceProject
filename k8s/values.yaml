@@ -1,6 +1,6 @@
 image: django-app
 user: postgres
 password: postgres
-host: custom-value
+host: localhost
 port: 5432
-name: wilber
+name: aifinance

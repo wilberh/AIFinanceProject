@@ -77,11 +77,20 @@ jobs:
     steps:
       - name: Checkout code # checking out code.
         uses: actions/checkout@v2
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master # settings up gcloud cli in our job machine.
+      - uses: google-github-actions/setup-gcloud@1bee7de035d65ec5da40a31f8589e240eba8fde5 # settings up gcloud cli in our job machine.
         with:
-          version: '270.0.0'
-          service_account_email: ${{ secrets.GKE_EMAIL }} # email address of our service account that will be created with storage and kubernetes permissions
           service_account_key: ${{ secrets.GKE_PASSWORD }} # service account file.
+          project_id: ${{ secrets.GKE_PROJECT }}
+      # Configure Docker to use the gcloud command-line tool as a credential
+      # helper for authentication
+      - run: |-
+          gcloud --quiet auth configure-docker
+      # Get the GKE credentials so we can deploy to the cluster
+      - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GKE_PASSWORD }}
       - name: Set Repo Location # steps required to find the image id of our image from contiainer registry
         id: repo
         run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step

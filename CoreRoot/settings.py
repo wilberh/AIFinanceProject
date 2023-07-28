@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-xqtj&r+5&$d0sdq7=m6)vne%ek8t_$ys3vju4#v-o%1yo(**n7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -89,7 +89,7 @@ which we will set in repository secret to be used in our deployment.
 if os.getenv('GITHUB_WORKFLOW'):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'github-actions',
             'USER': 'postgres',
             'PASSWORD': 'postgres',
@@ -100,7 +100,7 @@ if os.getenv('GITHUB_WORKFLOW'):
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': os.getenv('DB_NAME'),
             'USER': os.getenv('DB_USER'),
             'PASSWORD': os.getenv('DB_PASSWORD'),

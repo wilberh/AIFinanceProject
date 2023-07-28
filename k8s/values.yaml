@@ -2,5 +2,5 @@ image: django-app
 user: postgres
 password: postgres
 host: localhost
-port: !!str "5432"
+port: "5432"
 name: aifinance

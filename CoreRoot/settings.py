@@ -134,6 +134,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Note: need to remove at some point; needed when using github codespace
+CSRF_TRUSTED_ORIGINS = ['https://*.github.dev', 'http://*.github.dev']
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

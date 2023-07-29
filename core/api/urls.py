@@ -4,5 +4,5 @@ from . import views
 
 
 urlpatterns = [
-    path('trend/', views.GoogleTrendApiDetail.as_view(), name='trend')
+    path('aifinance/', views.GoogleTrendApiDetail.as_view(), name='aifinance')
 ]

@@ -14,12 +14,25 @@ from newsapi import NewsApiClient
 
 from datetime import date
 import sys, traceback
-import json
 import requests
+import os
+
+
+NEWSAPI_KEY = os.getenv('NEWSAPI_KEY')
 
 
 def get_stock_price(stock, strt_dt, end_dt):
     """
+    :Parameters:
+        stock : str, list
+            List of tickers to download
+        strt_dt: str
+            Download start date string (YYYY-MM-DD) or _datetime, inclusive.
+            Default is 29 days ago
+            E.g. for end_dt="2023-08-01", the strt_dt="2023-07-02"
+        end_dt: str
+            Download end date string (YYYY-MM-DD) or _datetime, exclusive.
+            Default is now
     'closing price' or 'adjusted closing price' is used because - gives you the most info you need to focus for a day 
     DONNOT use the following:
     *opening price is not reliable (subject to manipulation because of timelag between Asian and US markets; so there will be a huge difference)
@@ -43,6 +56,20 @@ def get_stock_price(stock, strt_dt, end_dt):
 
 def trend_by_countries(company, country, strt_dt, end_dt):
     """
+    :Parameters:
+        company : str
+            The company name.
+            E.g. "apple" or "microsoft" 
+        country: str
+            The country code to search for news articles data
+            E.g. "us" or "uk"
+        strt_dt: str
+            Download start date string (YYYY-MM-DD) or _datetime, inclusive.
+            Default is 29 days ago
+            E.g. for end_dt="2023-08-01", the strt_dt="2023-07-02"
+        end_dt: str
+            Download end date string (YYYY-MM-DD) or _datetime, exclusive.
+            Default is now
     https://github.com/cjhutto/vaderSentiment
     VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and 
     rule-based sentiment analysis tool that is specifically attuned to sentiments 
@@ -54,8 +81,7 @@ def trend_by_countries(company, country, strt_dt, end_dt):
     ranges from -1 to 1
     {'neg': 0.0, 'neu': 0.0, 'pos': 1.0, 'compound': 0.4404}
     """
-    api_key = '434684e910c04c288ae6e2fd5e74fee7'
-    newsapi = NewsApiClient(api_key=api_key)
+    newsapi = NewsApiClient(api_key=NEWSAPI_KEY)
 
     language = 'en'
 
@@ -78,7 +104,7 @@ def trend_by_countries(company, country, strt_dt, end_dt):
                    'sortBy': 'relevancy',
                    'page': page                  
                    }
-        headers = {'Authorization': f'Bearer {api_key}'}
+        headers = {'Authorization': f'Bearer {NEWSAPI_KEY}'}
         total_results = 1
         total_per_pages = 0
         all_articles = []

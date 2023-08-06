@@ -61,7 +61,10 @@ pip install -r requirements.txt
 | /api/aifinance      |    quote      | {"task": "quote", "ticker": "AAPL" *[OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]*}             |
 | /api/aifinance      |    trend      | {"task": "trend", "company": "Apple", "country": "us" *[OPTIONAL: ,"strt_dt", "2023-06-29", "end_dt": "2023-07-28"]*}  |
 
-### Feedback
+## License
+This project is [MIT](https://github.com/your_username/your_repository/blob/master/LICENSE) licensed.
+
+## Feedback
 For feedback or any inquiries, feel free to contact and connect with me on LinkedIn:
 [LinkedIn](https://www.linkedin.com/in/wilberhdez26/)
 

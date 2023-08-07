@@ -67,6 +67,9 @@ pip install -r requirements.txt
 ## License
 This project is [MIT](https://github.com/your_username/your_repository/blob/master/LICENSE) licensed.
 
+## BUGS AND FEATURE REQUESTS
+Have a bug or a feature request? Please open an [issue](https://github.com/wilberh/AIFinanceProject/issues/new).
+
 ## Feedback
 For feedback or any inquiries, feel free to contact and connect with me on LinkedIn:
 [LinkedIn](https://www.linkedin.com/in/wilberhdez26/)

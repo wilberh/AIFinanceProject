@@ -56,10 +56,12 @@ pip install -r requirements.txt
 
 4. **Access the UI for the Django-Rest Framework API:**
 
-   Go to `http://127.0.0.1:8000/api/aifinance` in your web browser and use any of following payloads to 
-   (1) get stock price, or (2) trend by country.
+   Go to `http://127.0.0.1:8000/api/aifinance` in your web browser and use any of following payloads to
+   - (1) get stock price, or
+   - (2) trend by country
+   - NOTE: this project leverages the [NewsAPI](https://newsapi.org/docs/endpoints/everything) (FREE-TIER, only the last 30 days of data)
 
-| API endpoint (POST)  |    Task       |    Payload    |
+| API endpoint (POST)  |    Task       |    Payload   |
 | -------------       | ------------- | ------------- |
 | /api/aifinance      |    quote      | {"task": "quote", "ticker": "AAPL" *[OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]*}             |
 | /api/aifinance      |    trend      | {"task": "trend", "company": "Apple", "country": "us" *[OPTIONAL: ,"strt_dt", "2023-06-29", "end_dt": "2023-07-28"]*}  |

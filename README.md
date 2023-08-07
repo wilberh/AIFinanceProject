@@ -55,6 +55,7 @@ pip install -r requirements.txt
    ```
 
 4. **Other Libraries and APIs:**
+   
    This project leverages this Python package and external API
   - Yahoo Finance API using [yfinance package](https://github.com/ranaroussi/yfinance) 
   - [NewsAPI](https://newsapi.org/docs/endpoints/everything) (FREE-TIER, only the last 30 days of data)

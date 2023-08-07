@@ -56,7 +56,7 @@ pip install -r requirements.txt
 
 4. **Access the UI for the Django-Rest Framework API:**
 
-   Go to `http://127.0.0.1:8000/api/aifinance` in your web browser and use any of follwoing payloads to 
+   Go to `http://127.0.0.1:8000/api/aifinance` in your web browser and use any of following payloads to 
    (1) get stock price, or (2) trend by country.
 
 | API endpoint (GET)  |    Task       |    Payload    |

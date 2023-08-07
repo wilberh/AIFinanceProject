@@ -54,12 +54,16 @@ pip install -r requirements.txt
    python manage.py runserver
    ```
 
-4. **Access the UI for the Django-Rest Framework API:**
+4. **Other Libraries and APIs:**
+   This project leverages this Python package and external API
+  - Yahoo Finance API using [yfinance package](https://github.com/ranaroussi/yfinance) 
+  - [NewsAPI](https://newsapi.org/docs/endpoints/everything) (FREE-TIER, only the last 30 days of data)
+   
+5. **Access the UI for the Django-Rest Framework API:**
 
    Go to `http://127.0.0.1:8000/api/aifinance` in your web browser and use any of following payloads to,
    - get stock price or
    - trend by country
-   - NOTE: this project leverages the [NewsAPI](https://newsapi.org/docs/endpoints/everything) (FREE-TIER, only the last 30 days of data)
 
 | API endpoint (POST)  |    Task       |    Payload   |
 | -------------       | ------------- | ------------- |

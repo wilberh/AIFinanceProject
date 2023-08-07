@@ -54,13 +54,7 @@ pip install -r requirements.txt
    python manage.py runserver
    ```
 
-4. **Other Libraries and APIs:**
-
-   This project leverages this Python package and external API,
-   - Yahoo Finance API using [yfinance package](https://github.com/ranaroussi/yfinance)
-   - [NewsAPI](https://newsapi.org/docs/endpoints/everything) (FREE-TIER, only the last 30 days of data)
-   
-5. **Access the UI for the Django-Rest Framework API:**
+4. **Access the UI for the Django-Rest Framework API:**
 
    Go to `http://127.0.0.1:8000/api/aifinance` in your web browser and use any of following payloads to,
    - get stock price or
@@ -71,6 +65,12 @@ pip install -r requirements.txt
 | /api/aifinance      |    quote      | {"task": "quote", "ticker": "AAPL" *[OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]*}             |
 | /api/aifinance      |    trend      | {"task": "trend", "company": "Apple", "country": "us" *[OPTIONAL: ,"strt_dt", "2023-06-29", "end_dt": "2023-07-28"]*}  |
 
+5. **Other Python Packages and APIs:**
+
+   This project leverages this Python package and external API,
+   - Yahoo Finance API using [yfinance package](https://github.com/ranaroussi/yfinance)
+   - [NewsAPI](https://newsapi.org/docs/endpoints/everything) (FREE-TIER, only the last 30 days of data)
+   
 ## Bugs and Feature Requests
 Have a bug or a feature request? Please open an [issue](https://github.com/wilberh/AIFinanceProject/issues/new).
 

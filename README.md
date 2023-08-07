@@ -1,5 +1,5 @@
 # AIFinanceProject
-Google I/O Extended Hackathon: Web, Mobile, and AI Focus
+Part of the Google I/O Extended Hackathon: Web, Mobile, and AI Focus
 
 ## Overview
 As a financial planner/investor, I'd like to assess how location (geography/geospatial info) affects financial decision-making.  This project tries to find if any connection between security performance and local economic behavior/news.  The inspiration is the Gamestop (short) story of 2021 ("Gaming Wall Street" - hbo max original series ; "The Lesson Of GameStop: Investing Is Not A Game" – Forbes Advisor).

@@ -1,21 +1,21 @@
+import sys
+import traceback
+import requests
+import os
+import pandas as pd
+import numpy as np
 import nltk
-nltk.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import yfinance as yf
+
+from datetime import date
 
 from newsapi import NewsApiClient
 
 from pytrends.request import TrendReq
 from google.cloud import bigquery
 
-import pandas as pd
-import numpy as np
-
-import yfinance as yf
-
-from datetime import date
-import sys, traceback
-import requests
-import os
+nltk.download('vader_lexicon')
 
 
 NEWSAPI_KEY = os.getenv('NEWSAPI_KEY')
@@ -42,11 +42,11 @@ def get_stock_price(stock, strt_dt, end_dt):
     # stock = ['^GSPC','AAPL','MSFT','INTC']
     """
     try:
-        SP = yf.download(stock,start=strt_dt,end=end_dt,interval='1d')
-        
+        SP = yf.download(stock, start=strt_dt, end=end_dt, interval='1d')
+
         if not isinstance(SP, pd.DataFrame):
             return {"error": "Bad response from API"}
-        
+
         SP.index = SP.index.strftime('%Y%m%d')
         SP_close = SP.Close
 
@@ -73,8 +73,8 @@ def trending_by_country(company, country, strt_dt, end_dt):
             Download end date string (YYYY-MM-DD) or _datetime, exclusive.
             Default is now
     https://github.com/cjhutto/vaderSentiment
-    VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and 
-    rule-based sentiment analysis tool that is specifically attuned to sentiments 
+    VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and
+    rule-based sentiment analysis tool that is specifically attuned to sentiments
     expressed in social media. It is fully open-sourced.
 
     NLTK provides us with a VADER implementation for easy use -
@@ -92,22 +92,23 @@ def trending_by_country(company, country, strt_dt, end_dt):
         sources = newsapi.get_sources()
         sources_records = sources['sources']
         sources_df = pd.DataFrame.from_records(sources_records)
-        sources_country = sources_df[(sources_df['language'] == language) 
-                                    & (sources_df['category'] == 'business')
-                                    & (sources_df['country'] == country)]
+        sources_country = sources_df[(sources_df['language'] == language) &
+                                     (sources_df['category'] == 'business') &
+                                     (sources_df['country'] == country)]
         # 20 max sources allowed by api
         max_sources_api = ','.join(list(sources_country['id'].iloc[:20]))
 
         page = 1
-        params = {'q': company, 
-                   'sources': max_sources_api,
-                   'from': strt_dt,
-                   'to': end_dt,
-                   'language': language,
-                   'searchIn': 'title',
-                   'sortBy': 'relevancy',
-                   'page': page                  
-                   }
+        params = {
+            'q': company,
+            'sources': max_sources_api,
+            'from': strt_dt,
+            'to': end_dt,
+            'language': language,
+            'searchIn': 'title',
+            'sortBy': 'relevancy',
+            'page': page
+        }
         headers = {'Authorization': f'Bearer {NEWSAPI_KEY}'}
         total_results = 1
         total_per_pages = 0
@@ -138,8 +139,7 @@ def trending_by_country(company, country, strt_dt, end_dt):
                                  'title': title,
                                  'compound': score['compound']})
             titles_sentiment = pd.concat([titles_sentiment,
-                                          new_row.to_frame().T],
-                                          ignore_index=True)
+                                          new_row.to_frame().T], ignore_index=True)
 
         titles_sentiment.drop_duplicates(subset=['date', 'source', 'title'])
         return titles_sentiment.to_dict('records')

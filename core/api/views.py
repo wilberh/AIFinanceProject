@@ -16,17 +16,20 @@ from datetime import datetime, date, timedelta
 class GoogleTrendApiDetail(APIView):
     def post(self, request):
         data = request.data
-        # Example of API body/payload:
-        # {"task": "quote", "ticker": "AAPL" [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}
-        # {"task": "trend", "company": "Apple", "country": "us" [OPTIONAL: ,"strt_dt", "2023-06-29", "end_dt": "2023-07-28"]}
-
+        """
+        Example of API body/payload:
+            {"task": "quote", "ticker": "AAPL"
+                [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}
+            {"task": "trend", "company": "Apple", "country": "us"
+                [OPTIONAL: ,"strt_dt", "2023-06-29", "end_dt": "2023-07-28"]}
+        """
         task = data["task"]
 
         # NOTE: Hardcoded start and end dates to qualify for free-tier NewsAPI access (last 30 days)
         end_dt = date.today()
         strt_dt = end_dt - timedelta(days=29)
         strt_dt = data.get("strt_dt", strt_dt.isoformat())
-        end_dt = data.get("end_dt", end_dt.isoformat())  
+        end_dt = data.get("end_dt", end_dt.isoformat())
 
         if task == "quote":
             sp_close = get_stock_price(data["ticker"], strt_dt, end_dt)
@@ -40,7 +43,6 @@ class GoogleTrendApiDetail(APIView):
             return Response(trend_resp, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
-
 
     # def Index(request):
     #     return HttpResponse("AIFinance backend app page")

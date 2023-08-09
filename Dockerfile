@@ -1,6 +1,12 @@
+
 FROM python:3.10-alpine
-RUN mkdir /code
-WORKDIR /code
+RUN mkdir /app
+# set work directory
+WORKDIR /app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
 RUN apk update \
@@ -12,4 +18,6 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 # copy project
 COPY . .
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.wsgi"]
+EXPOSE 8000
+CMD ["python", "manage.py", "migrate"]
+ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "app.wsgi"]

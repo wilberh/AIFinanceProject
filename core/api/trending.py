@@ -54,7 +54,7 @@ def get_stock_price(stock, strt_dt, end_dt):
         return {"error": formatted_lines[0]+' \n'+formatted_lines[-1]}
 
 
-def trend_by_countries(company, country, strt_dt, end_dt):
+def trending_by_country(company, country, strt_dt, end_dt):
     """
     :Parameters:
         company : str

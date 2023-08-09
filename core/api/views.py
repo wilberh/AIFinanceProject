@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from rest_framework.schemas import AutoSchema
 from rest_framework import permissions
 from django.http import Http404
-from .trending import get_stock_price, trend_by_countries
+from .trending import get_stock_price, trending_by_country
 from datetime import datetime, date, timedelta
 
 
@@ -34,7 +34,7 @@ class GoogleTrendApiDetail(APIView):
                 return Response(sp_close, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return Response(sp_close, status=status.HTTP_200_OK)
         elif task == "trend":
-            trend_resp = trend_by_countries(data["company"], data["country"], strt_dt, end_dt)
+            trend_resp = trending_by_country(data["company"], data["country"], strt_dt, end_dt)
             if "error" in trend_resp:
                 return Response(trend_resp, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return Response(trend_resp, status=status.HTTP_200_OK)

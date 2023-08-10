@@ -107,8 +107,8 @@ jobs:
           gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER}} --zone ${{secrets.GKE_ZONE}} --project ${{secrets.GKE_PROJECT}}
       - name: List Helm releases
         run: helm list --all
-      - name: Rollback pending Helm install
-        run: helm rollback app
+      # - name: Rollback pending Helm install
+      #   run: helm rollback app
       - name: Helm Deploy # deploying our helm chart to our cluster
         run: >
           helm upgrade

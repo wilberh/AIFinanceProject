@@ -65,9 +65,9 @@ jobs:
           app_name: app
         with:
           username: _json_key # default for gcr.io
-          password: ${{ secrets.GKE_PASSWORD }} # service account file to be set as secret
-          registry: gcr.io # gcr registry domain
-          repository: ${{secrets.GKE_PROJECT}}/github-django-actions/app # GKE_PROJECT is out GCP Project id to be set as secret.
+          password: ${{ secrets.GCP_CREDENTIALS2 }} # service account json data
+          registry: gcr.io # gcr Artifactory registry domain
+          repository: ${{secrets.GKE_PROJECT}}/github-django-actions/app # GKE_PROJECT is the GCP Project id to be set as secret.
           tag_with_sha: true # this will tag our image with commit id. For example our image our be gcr.io/project-id/github-django-actions/app:sha-7865423 where 7865423 is the short sha of our commit.
 
   deploy-job: # deploy job is for deploying our code to google cloud cluster.
@@ -92,7 +92,7 @@ jobs:
       # helper for authentication
       - run: |
           gcloud --quiet auth configure-docker          
-      - name: Set Repo Location # steps required to find the image id of our image from contiainer registry
+      - name: Set Repo Location # steps required to find the image id of our image from GCP Artifactory container registry
         id: repo
         run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step
       - name: Check Repo Location

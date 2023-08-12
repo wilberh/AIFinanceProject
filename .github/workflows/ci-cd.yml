@@ -94,7 +94,8 @@ jobs:
           gcloud --quiet auth configure-docker          
       - name: Set Repo Location # steps required to find the image id of our image from GCP Artifactory container registry
         id: repo
-        run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step
+        run: echo "repo_name=gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        # run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step
       - name: Check Repo Location
         run: echo ${{ steps.repo.outputs.repo_name }} # checking our repo location
       - name: Install Helm # helm installation in our runner for deploying.

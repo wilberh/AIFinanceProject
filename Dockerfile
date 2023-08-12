@@ -1,6 +1,6 @@
-
 FROM python:3.10
 RUN mkdir /app
+
 # set work directory
 WORKDIR /app
 
@@ -11,6 +11,8 @@ RUN pip install -r requirements.txt
 # copy project
 COPY . .
 EXPOSE 8000
-# CMD ["python", "manage.py", "migrate"]
-# ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "app.wsgi"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.wsgi"]
+RUN python manage.py migrate --noinput
+# RUN python manage.py createsuperuser --noinput --username wilber --email wilberhdez@gmail.com
+# ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "CoreRoot.wsgi"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "CoreRoot.wsgi"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

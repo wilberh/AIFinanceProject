@@ -46,4 +46,5 @@ spec:
                   key: port
                   name: appsecrets
           ports:
-            - containerPort: 8000
+            - name: app-pod-port
+              containerPort: 8000

@@ -1,6 +1,6 @@
-image: django-app
-user: postgres
-password: postgres
+image: app
+user: admin
+password: password
 host: localhost
 port: "5432"
-name: aifinance
+name: dbname

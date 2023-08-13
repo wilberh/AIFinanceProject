@@ -17,7 +17,11 @@ spec:
     spec:
       containers:
         - name: app-image
-          image: {{.Values.image}}
+          image:
+            valueFrom:
+              secretKeyRef:
+                key: image
+                name: appsecrets
           imagePullPolicy: Always
           env:
             - name: DB_USER

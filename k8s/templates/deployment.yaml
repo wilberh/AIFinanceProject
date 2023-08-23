@@ -17,11 +17,12 @@ spec:
     spec:
       containers:
       - name: app-image
-        image: {{ default .Values.image | quote }}
+        image: {{ .Values.image }}
         imagePullPolicy: Always
         ports:
         - name: app-pod-port
           containerPort: 8000
+          protocol: TCP
         env:
         - name: DB_USER
           value: {{ .Values.user }}

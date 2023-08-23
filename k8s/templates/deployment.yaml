@@ -29,6 +29,6 @@ spec:
             - name: DB_HOST
               value: {{ .Values.host }}
             - name: DB_PORT
-              value: {{ .Values.port }}
+              value: {{ .Values.port | quote }}
             - name: app-pod-port
               containerPort: 8000

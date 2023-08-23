@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: app-image
-        image: {{ toYaml .Values.image }}
+        image: {{ toYaml | .Values.image }}
         imagePullPolicy: Always
         ports:
         - name: app-pod-port
@@ -33,4 +33,4 @@ spec:
         - name: DB_HOST
           value: {{ .Values.host }}
         - name: DB_PORT
-          value: {{ .Values.port | quote }}
+          value: {{ .Values.port }}

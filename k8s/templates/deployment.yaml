@@ -19,6 +19,9 @@ spec:
         - name: app-image
           image: {{ .Values.image }}
           imagePullPolicy: Always
+          ports:
+            - name: app-pod-port
+              containerPort: 8000
           env:
             - name: DB_USER
               value: {{ .Values.user }}
@@ -30,5 +33,3 @@ spec:
               value: {{ .Values.host }}
             - name: DB_PORT
               value: {{ .Values.port | quote }}
-            - name: app-pod-port
-              containerPort: 8000

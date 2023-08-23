@@ -21,30 +21,14 @@ spec:
           imagePullPolicy: Always
           env:
             - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  key: user
-                  name: appsecrets
+              value: {{ .Values.user }}
             - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  key: name
-                  name: appsecrets
+              value: {{ .Values.name }}
             - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: appsecrets
+              value: {{ .Values.password }}
             - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: host
-                  name: appsecrets
+              value: {{ .Values.host }}
             - name: DB_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: port
-                  name: appsecrets
-          ports:
+              value: {{ .Values.port }}
             - name: app-pod-port
               containerPort: 8000

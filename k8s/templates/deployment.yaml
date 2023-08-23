@@ -16,20 +16,20 @@ spec:
         domain: app
     spec:
       containers:
-        - name: app-image
-          image: {{ .Values.image }}
-          imagePullPolicy: Always
-          ports:
-            - name: app-pod-port
-              containerPort: 8000
-          env:
-            - name: DB_USER
-              value: {{ .Values.user }}
-            - name: DB_NAME
-              value: {{ .Values.name }}
-            - name: DB_PASSWORD
-              value: {{ .Values.password }}
-            - name: DB_HOST
-              value: {{ .Values.host }}
-            - name: DB_PORT
-              value: {{ .Values.port | quote }}
+      - name: app-image
+        image: {{ default .Values.image | quote }}
+        imagePullPolicy: Always
+        ports:
+        - name: app-pod-port
+          containerPort: 8000
+        env:
+        - name: DB_USER
+          value: {{ .Values.user }}
+        - name: DB_NAME
+          value: {{ .Values.name }}
+        - name: DB_PASSWORD
+          value: {{ .Values.password }}
+        - name: DB_HOST
+          value: {{ .Values.host }}
+        - name: DB_PORT
+          value: {{ .Values.port | quote }}

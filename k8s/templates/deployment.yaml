@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: app-image
-        image: {{ toYaml | .Values.image }}
+        image: {{ Values.image | default Values.image | toYaml }}
         imagePullPolicy: Always
         ports:
         - name: app-pod-port

@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Checkout code # checking our the code at current commit that triggers the workflow
         uses: actions/checkout@v3
+        with:
+          ref: main
       - name: Cache dependency # caching dependency will make our build faster.
         uses: actions/cache@v3 # for more info checkout pip section documentation at https://github.com/actions/cache
         with:
@@ -59,6 +61,8 @@ jobs:
     steps:
       - name: Checkout Code # checking out code.
         uses: actions/checkout@v3
+        with:
+          ref: main
       - name: Build & Publish Image # we are using a public GitHub Action to build and publish docker image to our GCR registry.
         uses: docker/build-push-action@v2
         env:
@@ -77,6 +81,8 @@ jobs:
     steps:
       - name: Checkout code # checking out code.
         uses: actions/checkout@v3
+        with:
+          ref: main
       - id: auth
         uses: google-github-actions/auth@v1
         with:

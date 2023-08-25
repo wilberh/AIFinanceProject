@@ -24,13 +24,13 @@ spec:
           containerPort: 8000
           protocol: TCP
         env:
-        - name: DB_USER
-          value: {{ .Values.user }}
-        - name: DB_NAME
-          value: {{ .Values.name }}
-        - name: DB_PASSWORD
-          value: {{ .Values.password }}
-        - name: DB_HOST
-          value: {{ .Values.host }}
-        - name: DB_PORT
-          value: {{ quote .Values.port }}
+          - name: DB_USER
+            value: {{ .Values.user }}
+          - name: DB_NAME
+            value: {{ .Values.name }}
+          - name: DB_PASSWORD
+            value: {{ .Values.password }}
+          - name: DB_HOST
+            value: {{ .Values.host }}
+          - name: DB_PORT
+            value: {{ quote .Values.port }}

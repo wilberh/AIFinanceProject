@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: app-image
-        image: "{{ Values.image }}"
+        image: {{ Values.image }}
         imagePullPolicy: Always
         ports:
         - name: app-pod-port

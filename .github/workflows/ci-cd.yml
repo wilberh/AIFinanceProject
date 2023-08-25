@@ -131,6 +131,6 @@ jobs:
           --wait
           --atomic
           app
-          ./AIFinanceProject/k8s
+          ./k8s
       - name: Check pods # checking pod list to see if they are running.
         run: kubectl get pods

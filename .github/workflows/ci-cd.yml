@@ -75,7 +75,7 @@ jobs:
           password: ${{ secrets.GCP_CREDENTIALS2 }} # service account json data
           registry: gcr.io # gcr Artifactory registry domain
           repository: ${{secrets.GKE_PROJECT}}/github-django-actions/app # GKE_PROJECT is the GCP Project id to be set as secret.
-          # tag_with_sha: true # this will tag our image with commit id. For example our image our be gcr.io/project-id/github-django-actions/app:sha-7865423 where 7865423 is the short sha of our commit.
+          tag_with_sha: true # this will tag our image with commit id. For example our image our be gcr.io/project-id/github-django-actions/app:sha-7865423 where 7865423 is the short sha of our commit.
 
   deploy-job: # deploy job is for deploying our code to google cloud cluster.
     runs-on: ubuntu-latest

@@ -33,4 +33,4 @@ spec:
         - name: DB_HOST
           value: {{ .Values.host }}
         - name: DB_PORT
-          value: {{ .Values.port }}
+          value: {{ quote .Values.port }}

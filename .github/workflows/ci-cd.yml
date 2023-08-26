@@ -77,13 +77,13 @@ jobs:
           password: ${{ steps.auth.outputs.access_token }}
       # This example runs "docker login" directly to Artifact Registry.
       - run: |
-          echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://us-docker.pkg.dev/atlantean-site-393904/github-django-actions
+          echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://us-docker.pkg.dev/atlantean-site-393904/github-django-action
       - name: Build & Publish Image # we are using a public GitHub Action to build and publish docker image to our GCR registry.
         uses: docker/build-push-action@v4
         env:
           app_name: app
         with:
-          context: .  # "{{defaultContext}}:github-django-actions"
+          context: .  # "{{defaultContext}}:github-django-action"
           push: true
           tags: latest
 
@@ -113,8 +113,8 @@ jobs:
           gcloud --quiet auth configure-docker          
       - name: Set Repo Location # steps required to find the image id of our image from GCP Artifactory container registry
         id: repo
-        run: echo "repo_name=gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-        # run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-actions/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step
+        run: echo "repo_name=gcr.io/${{secrets.GKE_PROJECT}}/github-django-action/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        # run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-action/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step
       - name: Check Repo Location
         run: echo ${{ steps.repo.outputs.repo_name }} # checking our repo location
       - name: Install Helm # helm installation in our runner for deploying.

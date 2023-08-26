@@ -81,7 +81,7 @@ jobs:
         env:
           app_name: app
         with:
-          context: "{{defaultContext}}:github-django-actions"
+          context: .  # "{{defaultContext}}:github-django-actions"
           push: true
           tags: user/app:latest
           # registry: gcr.io # gcr Artifactory registry domain

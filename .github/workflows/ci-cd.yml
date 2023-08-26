@@ -68,11 +68,11 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           token_format: access_token
-          credentials_json: ${{ secrets.GCP_CREDENTIALS2 }}
+          credentials_json: ${{ secrets.GH_GCR_SERVICE_ACCT }}
       - name: Login to GAR / Google Artifact Registry
         uses: docker/login-action@v2
         with:
-          registry: gcr.io  # or REGION-docker.pkg.dev
+          registry: us-docker.pkg.dev  # gcr.io  # or REGION-docker.pkg.dev
           username: oauth2accesstoken
           password: ${{ steps.auth.outputs.access_token }}
       # This example runs "docker login" directly to Artifact Registry.
@@ -86,11 +86,6 @@ jobs:
           context: .  # "{{defaultContext}}:github-django-actions"
           push: true
           tags: latest
-          # repository: ${{secrets.GKE_PROJECT}}/github-django-actions/app # GKE_PROJECT is the GCP Project id to be set as secret.
-          # registry: gcr.io # gcr Artifactory registry domain
-          # tag_with_sha: true # this will tag our image with commit id. For example our image our be gcr.io/project-id/github-django-actions/app:sha-7865423 where 7865423 is the short sha of our commit.
-          # username: _json_key # default for gcr.io
-          # password: ${{ secrets.GCP_CREDENTIALS2 }} # service account json data
 
   deploy-job: # deploy job is for deploying our code to google cloud cluster.
     runs-on: ubuntu-latest
@@ -104,7 +99,7 @@ jobs:
       - id: auth
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS2 }}
+          credentials_json: ${{ secrets.GH_GCR_SERVICE_ACCT }}
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
       - name: Use gcloud CLI

@@ -83,9 +83,9 @@ jobs:
         with:
           context: .  # "{{defaultContext}}:github-django-actions"
           push: true
-          tags: user/app:latest
-          # registry: gcr.io # gcr Artifactory registry domain
-          # repository: ${{secrets.GKE_PROJECT}}/github-django-actions/app # GKE_PROJECT is the GCP Project id to be set as secret.
+          tags: latest
+          registry: gcr.io # gcr Artifactory registry domain
+          repository: ${{secrets.GKE_PROJECT}}/github-django-actions/app # GKE_PROJECT is the GCP Project id to be set as secret.
           # tag_with_sha: true # this will tag our image with commit id. For example our image our be gcr.io/project-id/github-django-actions/app:sha-7865423 where 7865423 is the short sha of our commit.
           # username: _json_key # default for gcr.io
           # password: ${{ secrets.GCP_CREDENTIALS2 }} # service account json data

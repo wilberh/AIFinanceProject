@@ -68,6 +68,7 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           token_format: access_token
+          credentials_json: ${{ secrets.GCP_CREDENTIALS2 }}
       - name: Login to GAR / Google Artifact Registry
         uses: docker/login-action@v2
         with:

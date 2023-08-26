@@ -77,7 +77,7 @@ jobs:
           password: ${{ steps.auth.outputs.access_token }}
       # This example runs "docker login" directly to Artifact Registry.
       - run: |
-          echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://us-docker.pkg.dev/atlantean-site-393904/github-django-action
+          echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev/atlantean-site-393904/github-django-action
       - name: Build & Publish Image # we are using a public GitHub Action to build and publish docker image to our GCR registry.
         uses: docker/build-push-action@v4
         env:

@@ -72,7 +72,7 @@ jobs:
       - name: Login to GAR / Google Artifact Registry
         uses: docker/login-action@v2
         with:
-          registry: us-docker.pkg.dev  # gcr.io  # or REGION-docker.pkg.dev
+          registry: us-central1-docker.pkg.dev  # gcr.io  # or REGION-docker.pkg.dev
           username: oauth2accesstoken
           password: ${{ steps.auth.outputs.access_token }}
       # This example runs "docker login" directly to Artifact Registry.
@@ -83,7 +83,6 @@ jobs:
         env:
           app_name: app
         with:
-          context: .  # "{{defaultContext}}:github-django-action"
           push: true
           tags: latest
 

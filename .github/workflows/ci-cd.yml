@@ -85,7 +85,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: gcr.io/app:latest
+          tags: gcr.io/us-central1-docker.pkg.dev/atlantean-site-393904/github-action-aifinance/app:latest
 
   deploy-job: # deploy job is for deploying our code to google cloud cluster.
     runs-on: ubuntu-latest

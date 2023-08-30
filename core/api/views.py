@@ -19,9 +19,9 @@ class GoogleTrendApiDetail(APIView):
         - routing calls based on the content of a call 
         - for example the HTTP header or message body instead of just the URI
         - in this case the message body
-    :params: message body
+    :params: JSON request in message body
     :returns: JSON response based API body/payload request
-    
+
     Example of API body/payload:
         {"task": "quote", "ticker": "AAPL"
             [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}

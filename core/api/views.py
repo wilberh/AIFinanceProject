@@ -14,15 +14,15 @@ from datetime import datetime, date, timedelta
 
 
 class GoogleTrendApiDetail(APIView):
+    """
+    Example of API body/payload:
+        {"task": "quote", "ticker": "AAPL"
+            [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}
+        {"task": "trend", "company": "Apple", "country": "us"
+            [OPTIONAL: ,"strt_dt", "2023-06-29", "end_dt": "2023-07-28"]}
+    """
     def post(self, request):
         data = request.data
-        """
-        Example of API body/payload:
-            {"task": "quote", "ticker": "AAPL"
-                [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}
-            {"task": "trend", "company": "Apple", "country": "us"
-                [OPTIONAL: ,"strt_dt", "2023-06-29", "end_dt": "2023-07-28"]}
-        """
         task = data["task"]
 
         # NOTE: Hardcoded start and end dates to qualify for free-tier NewsAPI access (last 30 days)

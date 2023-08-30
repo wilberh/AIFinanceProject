@@ -19,7 +19,7 @@ jobs:
     services:
       postgres: # we need a postgres docker image to be booted a side car service to run the tests that needs a db
         image: postgres
-        env: # the environment variable must match with app/settings.py if block of DATBASES variable otherwise test will fail due to connectivity issue.
+        env: # the environment variable must match with app/settings.py if block of DATABASES variable otherwise test will fail due to connectivity issue.
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: github-actions
@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-      - name: Cache dependency # caching dependency will make our build faster.
+      - name: Cache dependency # caching dependency will make our build faster
         uses: actions/cache@v3 # for more info checkout pip section documentation at https://github.com/actions/cache
         with:
           path: ~/.cache/pip
@@ -56,28 +56,28 @@ jobs:
 
   package-job: # package job for building and publishing docker images
     runs-on: ubuntu-latest
-    needs: [health-check-job] # will be fired if and only if health-check-job is passed.
-    if: ${{ github.event_name == 'push' }} # will be fired if the trigger event is a push event.
+    needs: [health-check-job] # will be fired if and only if health-check-job is passed
+    if: ${{ github.event_name == 'push' }} # will be fired if the trigger event is a push event
     env:
       ARTIFACT_LOC1: us-central1
     steps:
-      - name: Checkout Code # checking out code.
+      - name: Checkout Code # checking out code
         uses: actions/checkout@v3
         with:
           ref: main
-      - name: Authenticate to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v1
-        with:
-          token_format: access_token
-          credentials_json: ${{ secrets.GH_GCR_SERVICE_ACCT }}
       - name: Set Image Name
         id: image
         run: echo "image_name=app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT        
       - name: Set Repo Location
         id: repo
         run: echo "repo_name=${{env.ARTIFACT_LOC1}}-docker.pkg.dev/${{secrets.GKE_PROJECT}}/github-action-aifinance/${{ steps.image.outputs.image_name }}" >> $GITHUB_OUTPUT
-      - name: Login to Google Artifact Registry - using docker login action
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          token_format: access_token
+          credentials_json: ${{ secrets.GH_GCR_SERVICE_ACCT }}
+      - name: Login to Google Cloud Artifact Registry - using docker login action
         uses: docker/login-action@v2
         with:
           registry: ${{env.ARTIFACT_LOC1}}-docker.pkg.dev
@@ -93,7 +93,7 @@ jobs:
         run: |
           docker image push ${{ steps.repo.outputs.repo_name }}
 
-  deploy-job: # deploy job is for deploying our code to google cloud k8s cluster
+  deploy-job: # deploy job is for deploying the code to Google Cloud k8s cluster
     runs-on: ubuntu-latest
     needs: [package-job] # will require package-job to be successful for triggering
     if: ${{ github.event_name == 'push' }} # will be fire if the trigger event is a push event.
@@ -104,21 +104,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-      - name: Authenticate to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GH_GCR_SERVICE_ACCT }}
-      - name: Set up Cloud SDK # TODO: find out if this is needed
-        uses: google-github-actions/setup-gcloud@v1
-      - name: Use gcloud CLI
-        run: gcloud info
-      - name: Install gke-gcloud-auth-plugin # TODO: find out if this is needed
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
-      - name: Configure Docker to use the gcloud CLI tool as a credential helper for auth # TODO: find out if this is needed
-        run: |
-          gcloud --quiet auth configure-docker          
       - name: Set Image Name
         id: image
         run: echo "image_name=app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT        
@@ -126,22 +111,33 @@ jobs:
         id: repo
         run: echo "repo_name=${{env.ARTIFACT_LOC1}}-docker.pkg.dev/${{secrets.GKE_PROJECT}}/github-action-aifinance/${{ steps.image.outputs.image_name }}" >> $GITHUB_OUTPUT
       - name: Check Repo Location
-        run: echo ${{ steps.repo.outputs.repo_name }} # checking our repo location
-      - name: Install Helm # helm installation in our runner for deploying.
+        run: echo ${{ steps.repo.outputs.repo_name }} # checking the repo location
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GH_GCR_SERVICE_ACCT }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+      - name: Use gcloud CLI
+        run: gcloud info
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+      - name: Configure Docker to use the gcloud CLI tool as a credential helper for auth
+        run: |
+          gcloud --quiet auth configure-docker          
+      - name: Install Helm # helm installation in this runner for deploying
         run: |
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
-      - name: Connect to kubernetes cluster
+      - name: Connect to Google Cloud kubernetes cluster
         run: |
           gcloud container clusters get-credentials ${{secrets.GKE_CLUSTER}} --zone ${{secrets.GKE_ZONE}} --project ${{secrets.GKE_PROJECT}}
       - name: List Helm releases
         run: helm list --all
-      # - name: Rollback pending Helm install
-      #   run: helm rollback app
-      # - name: add repo
-      #   run: helm repo add argo https://argoproj.github.io/argo-helm
-      - name: Helm Deploy # deploying our helm chart to our cluster
+      - name: Helm Deploy # deploying helm chart to Google Cloud k8s cluster
         run: >
           helm upgrade
           --install
@@ -155,5 +151,5 @@ jobs:
           --atomic
           app
           ./k8s
-      - name: Check pods # checking pod list to see if they are running.
+      - name: Check pods # checking pod list to see if they are running
         run: kubectl get pods

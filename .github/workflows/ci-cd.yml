@@ -69,23 +69,46 @@ jobs:
         with:
           token_format: access_token
           credentials_json: ${{ secrets.GH_GCR_SERVICE_ACCT }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+      - name: Use gcloud CLI
+        run: gcloud info
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+      # Configure Docker to use the gcloud command-line tool as a credential
+      # helper for authentication
+      - run: |
+          gcloud --quiet auth configure-docker          
+      - name: Set Repo Location # steps required to find the image id of our image from GCP Artifactory container registry
+        id: repo
+        run: echo "repo_name=gcr.io/${{secrets.GKE_PROJECT}}/github-action-aifinance/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Login to Google Artifact Registry - using docker login action
         uses: docker/login-action@v2
         with:
-          registry: us-central1-docker.pkg.dev/atlantean-site-393904/github-action-aifinance  # gcr.io  # or REGION-docker.pkg.dev
+          registry: us-central1-docker.pkg.dev  # /${{secrets.GKE_PROJECT}}/github-action-aifinance  # gcr.io  # or REGION-docker.pkg.dev
           username: oauth2accesstoken
           password: ${{ steps.auth.outputs.access_token }}
       # This example runs "docker login" directly to Artifact Registry.
       # - name: Running "docker login" directly to Artifact Registry
       #   run: |
       #     echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev/atlantean-site-393904/github-action-aifinance
-      - name: Build & Publish Image # we are using a public GitHub Action to build and publish docker image to our GCR registry.  
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: user/app:latest
+      # - name: Build & Publish Image # we are using a public GitHub Action to build and publish docker image to our GCR registry.  
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile
+      #     push: true
+      #     tags: user/app:latest
+      - name: Build Docker Image 
+        run: |
+          docker build -t app:latest .
+      - name: Tag Image to Artifact Registry 
+        run: |
+          docker tag app:latest us-central1-docker.pkg.dev/atlantean-site-393904/github-action-aifinance/app:latest
+      - name: Publish Image
+        run: |
+          docker image push us-central1-docker.pkg.dev/atlantean-site-393904/github-action-aifinance/app:latest
 
   deploy-job: # deploy job is for deploying our code to google cloud cluster.
     runs-on: ubuntu-latest
@@ -113,8 +136,7 @@ jobs:
           gcloud --quiet auth configure-docker          
       - name: Set Repo Location # steps required to find the image id of our image from GCP Artifactory container registry
         id: repo
-        run: echo "repo_name=gcr.io/${{secrets.GKE_PROJECT}}/github-django-action/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-        # run: echo "::set-output name=repo_name::gcr.io/${{secrets.GKE_PROJECT}}/github-django-action/app:sha-$(git rev-parse --short HEAD)" # we are setting the image location as output to be used in later step
+        run: echo "repo_name=gcr.io/${{secrets.GKE_PROJECT}}/github-action-aifinance/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Check Repo Location
         run: echo ${{ steps.repo.outputs.repo_name }} # checking our repo location
       - name: Install Helm # helm installation in our runner for deploying.

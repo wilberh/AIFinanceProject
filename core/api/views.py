@@ -22,7 +22,7 @@ class GoogleTrendApiDetail(APIView):
     :params: JSON request in message body
     :returns: JSON response based API body/payload request
 
-    Example of API body/payload:
+    Example of API body/payload (API endpoint: /api/aifinance/):
         - Stock quote:
             {   "task": "quote", 
                 "ticker": "AAPL"

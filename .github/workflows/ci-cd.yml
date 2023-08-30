@@ -87,7 +87,7 @@ jobs:
         run: echo "image_name=app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT        
       - name: Set Repo Location # steps required to find the image id of our image from GCP Artifactory container registry
         id: repo
-        run: echo "repo_name=gcr.io/${{secrets.GKE_PROJECT}}/github-action-aifinance/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "repo_name=${{env.ARTIFACT_LOC1}}-docker.pkg.dev/${{secrets.GKE_PROJECT}}/github-action-aifinance/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Login to Google Artifact Registry - using docker login action
         uses: docker/login-action@v2
         with:
@@ -120,6 +120,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [package-job] # will require package-job to be successful for triggering
     if: ${{ github.event_name == 'push' }} # will be fire if the trigger event is a push event.
+    env:
+      ARTIFACT_LOC1: us-central1
     steps:
       - name: Checkout code # checking out code.
         uses: actions/checkout@v3
@@ -142,7 +144,7 @@ jobs:
           gcloud --quiet auth configure-docker          
       - name: Set Repo Location # steps required to find the image id of our image from GCP Artifactory container registry
         id: repo
-        run: echo "repo_name=gcr.io/${{secrets.GKE_PROJECT}}/github-action-aifinance/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "repo_name=${{env.ARTIFACT_LOC1}}-docker.pkg.dev/${{secrets.GKE_PROJECT}}/github-action-aifinance/app:sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Check Repo Location
         run: echo ${{ steps.repo.outputs.repo_name }} # checking our repo location
       - name: Install Helm # helm installation in our runner for deploying.

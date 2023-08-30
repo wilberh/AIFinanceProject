@@ -15,11 +15,18 @@ from datetime import datetime, date, timedelta
 
 class GoogleTrendApiDetail(APIView):
     """
+    API architecture pattern: API content-based routing
+        - routing calls based on the content of a call 
+        - for example the HTTP header or message body instead of just the URI
+        - in this case the message body
+    :params: message body
+    :returns: JSON response based API body/payload request
+    
     Example of API body/payload:
         {"task": "quote", "ticker": "AAPL"
             [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}
         {"task": "trend", "company": "Apple", "country": "us"
-            [OPTIONAL: ,"strt_dt", "2023-06-29", "end_dt": "2023-07-28"]}
+            [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}
     """
     def post(self, request):
         data = request.data

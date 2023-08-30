@@ -91,7 +91,7 @@ jobs:
       - name: Login to Google Artifact Registry - using docker login action
         uses: docker/login-action@v2
         with:
-          registry: ${{env.ARTIFACT_LOC1}}.pkg.dev  # /${{secrets.GKE_PROJECT}}/github-action-aifinance  # gcr.io  # or REGION-docker.pkg.dev
+          registry: ${{env.ARTIFACT_LOC1}}-docker.pkg.dev  # /${{secrets.GKE_PROJECT}}/github-action-aifinance  # gcr.io  # or REGION-docker.pkg.dev
           username: oauth2accesstoken
           password: ${{ steps.auth.outputs.access_token }}
       # This example runs "docker login" directly to Artifact Registry.

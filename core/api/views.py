@@ -23,10 +23,17 @@ class GoogleTrendApiDetail(APIView):
     :returns: JSON response based API body/payload request
 
     Example of API body/payload:
-        {"task": "quote", "ticker": "AAPL"
-            [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}
-        {"task": "trend", "company": "Apple", "country": "us"
-            [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]}
+        - Stock quote:
+            {   "task": "quote", 
+                "ticker": "AAPL"
+                [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]
+            }
+        - Trending News Titles with Sentiment Analysis Score:
+            {   "task": "trend", 
+                "company": "Apple", 
+                "country": "us"
+                [OPTIONAL: ,"strt_dt": "2023-06-29", "end_dt": "2023-07-28"]
+            }
     """
     def post(self, request):
         data = request.data

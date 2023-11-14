@@ -88,18 +88,7 @@ When we deploy to cloud the else block will work as we won't be having GITHUB_WO
 That time the db config we use DB_USER, DB_NAME, DB_PASSWORD, DB_HOST and DB_PASSWORD
 which we will set in repository secret to be used in our deployment.
 '''
-if os.getenv('GITHUB_WORKFLOW'):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'github-actions',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
-            'HOST': 'localhost',
-            'PORT': '5432'
-        }
-    }
-elif os.getenv('ENV'):
+if os.getenv('ENV') == 'DEV':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -108,6 +97,17 @@ elif os.getenv('ENV'):
             'PASSWORD': os.getenv('DB_PASSWORD'),
             'HOST': os.getenv('DB_HOST'),
             'PORT': os.getenv('DB_PORT')
+        }
+    }
+elif os.getenv('GITHUB_WORKFLOW'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'github-actions',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': 'localhost',
+            'PORT': '5432'
         }
     }
 else:

@@ -41,8 +41,10 @@ def get_stock_price(stock, strt_dt, end_dt):
     *low and high price doesn't give you the big picture
     # stock = ['^GSPC','AAPL','MSFT','INTC']
     """
+    unsafe_session = requests.session()
+    unsafe_session.verify = False
     try:
-        SP = yf.download(stock, start=strt_dt, end=end_dt, interval='1d')
+        SP = yf.download(stock, start=strt_dt, end=end_dt, interval='1d', session=unsafe_session)
 
         if not isinstance(SP, pd.DataFrame):
             return {"error": "Bad response from API"}

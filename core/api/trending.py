@@ -86,7 +86,10 @@ def trending_by_country(company, country, strt_dt, end_dt):
     ranges from -1 to 1
     {'neg': 0.0, 'neu': 0.0, 'pos': 1.0, 'compound': 0.4404}
     """
-    newsapi = NewsApiClient(api_key=NEWSAPI_KEY)
+    unsafe_session = requests.session()
+    unsafe_session.verify = False
+    
+    newsapi = NewsApiClient(api_key=NEWSAPI_KEY, session=unsafe_session)
 
     language = 'en'
 
@@ -119,7 +122,7 @@ def trending_by_country(company, country, strt_dt, end_dt):
         while total_results > total_per_pages:
             params['page']: page
             resp = requests.get('https://newsapi.org/v2/everything',
-                                params=params, headers=headers)
+                                params=params, headers=headers, verify=False)
             resp_all_articles = resp.json()
             all_articles.extend(resp_all_articles['articles'])
             total_results = resp_all_articles['totalResults']
